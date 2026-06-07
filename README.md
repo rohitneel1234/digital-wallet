@@ -148,17 +148,31 @@ digital-wallet
 └── .gitignore
 ```
 
-## Architecture
+## Application Architecture
 
-The project follows a layered architecture:
-
-Controller
-↓
-Service
-↓
-Repository
-↓
-Database
+```text
+                    Client
+                       │
+                       ▼
+              ┌─────────────────┐
+              │   Controller    │
+              └─────────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │     Service     │
+              └─────────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │   Repository    │
+              └─────────────────┘
+                       │
+                       ▼
+              ┌─────────────────┐
+              │  Database (H2)  │
+              └─────────────────┘
+```
 
 Additional design principles:
 
