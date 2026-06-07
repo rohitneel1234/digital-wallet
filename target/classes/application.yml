@@ -1,0 +1,88 @@
+spring:
+  profiles:
+    active: dev
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    deserialization:
+      fail-on-unknown-properties: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:h2:mem:walletdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    open-in-view: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  cache:
+    type: simple
+
+logging:
+  level:
+    com.wallet: DEBUG
+    org.springframework.security: INFO
+
+app:
+  jwt:
+    secret: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7e8d4b6e7b0c39d33b8b8a5f2d
+    expiration-ms: 86400000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics,info
+  endpoint:
+    health:
+      show-details: always
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/walletdb}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false
+
+  cache:
+    type: simple
+
+  h2:
+    console:
+      enabled: false
+
+logging:
+  level:
+    com.wallet: INFO
